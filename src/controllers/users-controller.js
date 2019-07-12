@@ -1,21 +1,28 @@
 const User = require("../models/User");
 
 class UsersController {
-  static async createUser(req, res, next) {
-    User.create({ name: req.body.name, age: req.body.age });
-    res.send(await User.find());
+  constructor() {}
+
+  async createUser(req, res, next) {
+    User.create({
+      name: req.body.name,
+      age: req.body.age
+    });
+    res.json(await User.find());
   }
 
-  static async readUsers(req, res, next) {
-    res.send(await User.find());
+  async readUsers(req, res, next) {
+    res.json(await User.find());
   }
 
-  static async readUser(req, res, next) {
+  async readUser(req, res, next) {
     const id = req.params.id;
-    res.send(await User.findOne({ _id: id }));
+    res.json(await User.findOne({
+      _id: id
+    }));
   }
 
-  static async updateUser(req, res, next) {
+  async updateUser(req, res, next) {
     const id = req.params.id;
     const updates = req.body;
 
@@ -25,18 +32,22 @@ class UsersController {
       changes[updateKey] = updates[updateKey];
     }
 
-    res.send(
-      await User.findByIdAndUpdate(
-        { _id: id },
-        { $set: changes },
-        { new: true }
-      )
+    res.json(
+      await User.findByIdAndUpdate({
+        _id: id
+      }, {
+        $set: changes
+      }, {
+        new: true
+      })
     );
   }
 
-  static async deleteUser(req, res, next) {
+  async deleteUser(req, res, next) {
     const _id = req.params.id;
-    res.send(await User.remove({ _id }));
+    res.json(await User.remove({
+      _id
+    }));
   }
 }
 
